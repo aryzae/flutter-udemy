@@ -105,18 +105,13 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 }
 
-class RateCard extends StatefulWidget {
+class RateCard extends StatelessWidget {
   RateCard({this.crypto, this.exchangeCurrency, this.selectedCurrency});
 
   final String crypto;
   final String exchangeCurrency;
   final String selectedCurrency;
 
-  @override
-  _RateCardState createState() => _RateCardState();
-}
-
-class _RateCardState extends State<RateCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -130,7 +125,7 @@ class _RateCardState extends State<RateCard> {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
           child: Text(
-            '1 ${widget.crypto} = ${widget.exchangeCurrency} ${widget.selectedCurrency}',
+            '1 ${crypto} = ${exchangeCurrency} ${selectedCurrency}',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20.0,
