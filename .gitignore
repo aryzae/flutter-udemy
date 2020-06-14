@@ -73,3 +73,5 @@ build/
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+flash-chat-flutter-master/android/app/google-services.json
+flash-chat-flutter-master/ios/Runner/GoogleService-Info.plist
