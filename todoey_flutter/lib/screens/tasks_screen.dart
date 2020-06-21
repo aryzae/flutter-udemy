@@ -10,15 +10,6 @@ class TasksScreen extends StatefulWidget {
 
 class _TasksScreenState extends State<TasksScreen> {
   List<Task> tasks = [];
-  int taskCount = 0;
-
-  void addTask({String name}) {
-    setState(() {
-      tasks.add(Task(name: name));
-      taskCount =
-          tasks.isEmpty ? 0 : tasks.where((element) => !element.isDone).length;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +45,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  '$taskCount Tasks',
+                  '${tasks.length} Tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -75,11 +66,6 @@ class _TasksScreenState extends State<TasksScreen> {
               ),
               child: TasksList(
                 tasks: tasks,
-                checkboxCallback: (index) {
-                  setState(() {
-                    tasks[index].toggleDone();
-                  });
-                },
               ),
             ),
           ),
@@ -99,11 +85,14 @@ class _TasksScreenState extends State<TasksScreen> {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskScreen(),
+                child: AddTaskScreen((newTaskTitle) {
+                  setState(() {
+                    tasks.add(Task(name: newTaskTitle));
+                  });
+                }),
               ),
             ),
           );
-          addTask(name: taskName);
         },
       ),
     );
