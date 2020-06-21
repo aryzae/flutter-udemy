@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AddTaskScreen extends StatelessWidget {
+  AddTaskScreen();
+
+  String _taskName = '';
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,6 +25,9 @@ class AddTaskScreen extends StatelessWidget {
             Theme(
               data: ThemeData(primaryColor: Colors.lightBlueAccent),
               child: TextField(
+                onChanged: (newValue) {
+                  _taskName = newValue;
+                },
                 autofocus: true,
                 textAlign: TextAlign.center,
               ),
@@ -36,7 +43,9 @@ class AddTaskScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 color: Colors.lightBlueAccent,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, _taskName);
+                },
               ),
             ),
           ],

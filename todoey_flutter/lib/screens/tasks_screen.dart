@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:todoeyflutter/models/task.dart';
 import 'package:todoeyflutter/screens/add_task_screen.dart';
 import 'package:todoeyflutter/widgets/tasks_list.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [];
+  int taskCount = 0;
+
+  void addTask({String name}) {
+    setState(() {
+      tasks.add(Task(name: name));
+      taskCount =
+          tasks.isEmpty ? 0 : tasks.where((element) => !element.isDone).length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +54,7 @@ class TasksScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 Tasks',
+                  '$taskCount Tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -48,16 +65,24 @@ class TasksScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20.0),
-                    bottom: Radius.zero,
-                  ),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20.0),
+                  bottom: Radius.zero,
                 ),
-                child: TasksList()),
-          )
+              ),
+              child: TasksList(
+                tasks: tasks,
+                checkboxCallback: (index) {
+                  setState(() {
+                    tasks[index].toggleDone();
+                  });
+                },
+              ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -66,8 +91,8 @@ class TasksScreen extends StatelessWidget {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () {
-          showModalBottomSheet(
+        onPressed: () async {
+          String taskName = await showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             builder: (context) => SingleChildScrollView(
@@ -78,6 +103,7 @@ class TasksScreen extends StatelessWidget {
               ),
             ),
           );
+          addTask(name: taskName);
         },
       ),
     );
