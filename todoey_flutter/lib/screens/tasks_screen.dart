@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todoeyflutter/models/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todoeyflutter/models/task_data.dart';
 import 'package:todoeyflutter/screens/add_task_screen.dart';
 import 'package:todoeyflutter/widgets/tasks_list.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [];
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +39,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  '${tasks.length} Tasks',
+                  '${Provider.of<TaskData>(context).taskCount} Tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -64,9 +58,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   bottom: Radius.zero,
                 ),
               ),
-              child: TasksList(
-                tasks: tasks,
-              ),
+              child: TasksList(),
             ),
           ),
         ],
@@ -77,19 +69,15 @@ class _TasksScreenState extends State<TasksScreen> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () async {
-          String taskName = await showModalBottomSheet(
+        onPressed: () {
+          showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             builder: (context) => SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskScreen((newTaskTitle) {
-                  setState(() {
-                    tasks.add(Task(name: newTaskTitle));
-                  });
-                }),
+                child: AddTaskScreen(),
               ),
             ),
           );
